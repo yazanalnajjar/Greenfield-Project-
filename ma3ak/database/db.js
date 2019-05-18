@@ -11,28 +11,31 @@ db.once('open' , function(){
 });
 //This For USer Information YY
 const usersSchema = new Schema({
+    username : {   
         firstName   : {type : String, trim : true , required : true},
         lastName    : {type : String , trim : true , required : true},
-        email: {
+    },
+    email: {
             type: String,
             required: [true, 'Email Field is required'],
             unique:true,
             match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
         },
-
-        phoneNumber : {type : Number , unique : true},
+    
         password    : {type : String , required : true }
 });
 
 //This Schema for USer Information about the car
-const InfoCar = new Schema({
+const shop = new Schema({
 
-    carType : {type : String , required : true},
-    carModel : {type : String , required:true},
-    carYear : {type : Number , required : true},
-    address : {type : String , required : true},
-    streetName : {type : String , required : true},
-    area : {type:String , required :true}
+    shopname : {type : String , required : true},
+    shoplocation : {type : String , coordinates : [Number] },
+    workkinghour : { type : Number},
+    specialties : { type : String},
+    phoneNumber : {type : Number , required : true}
+
+    
+    
 
 });
 
@@ -41,7 +44,7 @@ const InfoCar = new Schema({
 
 
 const user = mongoose.model('users' , usersSchema);
-const infoCar = mongoose.model('infoCar' , InfoCar);
+const shops = mongoose.model('shopinformation' , shop);
 
 
 
@@ -51,11 +54,9 @@ let save = (data => {
 
         var obj = {
 
-            firstName : data[i].firstName,
-            lastName :  data[i].lastName,
-            email :     data[i].email,
-            phoneNumber : data[i].phoneNumber,
-            password : data[i].password
+            username   : data[i].username,
+             email       : data[i].email,
+            password    : data[i].password
         }
 
         var rebo = new usersSchema(obj);
@@ -65,6 +66,6 @@ let save = (data => {
 
 
 module.exports.user  = user;
-module.exports.InfoCar = InfoCar;
+module.exports.shop = shop;
 
 
